@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ESG 循環維修平台</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f6fb;
+}
+
+/* ===== 共用 ===== */
+
+.container{
+    width:90%;
+    max-width:1000px;
+    margin:auto;
+    padding:40px 0;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.btn{
+    background:#6a8dff;
+    color:white;
+    padding:12px 22px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    text-decoration:none;
+    transition:0.3s;
+    display:inline-block;
+}
+
+.btn:hover{
+    background:#4f74f0;
+}
+
+/* ===== 首頁 ===== */
+
+header{
+    background:linear-gradient(135deg,#6a8dff,#8f6cff);
+    color:white;
+    text-align:center;
+    padding:25px;
+    font-size:40px;
+    font-weight:bold;
+}
+
+.search-box{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+input{
+    flex:1;
+    font-size:18px;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+.brand-list{
+    margin-top:30px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.brand{
+    background:#eef2ff;
+    padding:15px 25px;
+    border-radius:10px;
+    color:#333;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.brand:hover{
+    background:#dbe4ff;
+}
+
+/* ===== Apple頁 ===== */
+
+#applePage{
+    display:none;
+}
+
+.title{
+    margin-bottom:30px;
+    color:#333;
+    font-size:32px;
+    text-align:center;
+}
+
+.item{
+    background:#f8f8f8;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:0.3s;
+}
+
+.item:hover{
+    transform:translateY(-3px);
+    box-shadow:0 5px 10px rgba(0,0,0,0.1);
+}
+
+.left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.left img{
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:12px;
+    background:white;
+    border:1px solid #ddd;
+    padding:5px;
+}
+
+.left span{
+    font-size:20px;
+    font-weight:bold;
+    color:#333;
+}
+
+/* ===== 電池頁 ===== */
+
+#batteryPage{
+    display:none;
+}
+
+.option{
+    background:#f8f8f8;
+    border:1px solid #ddd;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:20px;
+    transition:0.3s;
+}
+
+.option:hover{
+    transform:translateY(-3px);
+    box-shadow:0 5px 12px rgba(0,0,0,0.08);
+}
+
+.product-layout{
+    display:flex;
+    gap:20px;
+    align-items:flex-start;
+}
+
+.product-img{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:12px;
+    border:1px solid #ddd;
+}
+
+.content{
+    flex:1;
+}
+
+.health{
+    color:green;
+    font-weight:bold;
+    margin-bottom:12px;
+    font-size:20px;
+}
+
+.price{
+    line-height:1.8;
+    color:#333;
+}
+
+.second-hand{
+    margin-top:10px;
+    color:#666;
+    font-weight:bold;
+}
+
+/* ===== 搜尋結果頁 ===== */
+
+#searchPage{
+    display:none;
+}
+
+.search-title{
+    margin-bottom:30px;
+    color:#333;
+}
+
+.search-header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.search-header img{
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:12px;
+    border:1px solid #ddd;
+    background:white;
+    padding:5px;
+}
+
+.search-name{
+    color:green;
+    font-weight:bold;
+    font-size:24px;
+}
+
+.search-content{
+    font-size:18px;
+    line-height:1.8;
+    color:#333;
+}
+
+.back-btn{
+    margin-bottom:25px;
+}
+
+/* ===== 手機版 ===== */
+
+@media(max-width:700px){
+
+    .item{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .left{
+        flex-direction:column;
+    }
+
+    .product-layout{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+    }
+
+    .product-img{
+        width:100%;
+        max-width:220px;
+        height:auto;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ===== 首頁 ===== -->
+
+<div id="homePage">
+
+<header>
+ESG 循環維修平台
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>搜尋商品</h2>
+
+        <div class="search-box">
+
+            <input type="text" placeholder="輸入型號或零件名稱">
+
+            <!-- 搜尋按鈕 -->
+            <a href="#" class="btn" onclick="showSearchPage()">
+                搜尋
+            </a>
+
+        </div>
+
+        <h2 style="margin-top:40px;">品牌</h2>
+
+        <div class="brand-list">
+
+            <div class="brand" onclick="showApplePage()">
+                Apple
+            </div>
+
+            <div class="brand">
+                ASUS
+            </div>
+
+            <div class="brand">
+                小米
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- ===== 搜尋結果頁 ===== -->
+
+<div id="searchPage">
+
+<div class="container">
+
+<div class="card">
+
+<a href="#" class="btn back-btn" onclick="backHomeFromSearch()">
+← 返回首頁
+</a>
+
+<h2 class="search-title">搜尋結果</h2>
+
+<!-- 電池 -->
+<div class="option">
+
+    <div class="search-header">
+        <img src="https://files.catbox.moe/m8pmsg.jpg" alt="電池">
+        <div class="search-name">電池</div>
+    </div>
+
+    <div class="search-content">
+        全新：NT$ 3000<br><br>
+
+        (二手)<br>
+        健康度90：NT$ 2200(1點)<br>
+        健康度80：NT$ 1900(2點)<br>
+        健康度70：NT$ 1600(3點)
+    </div>
+
+</div>
+
+<!-- 螢幕 -->
+<div class="option">
+
+    <div class="search-header">
+        <img src="https://files.catbox.moe/4vpq2y.jpg" alt="螢幕">
+        <div class="search-name">螢幕</div>
+    </div>
+
+    <div class="search-content">
+        全新：NT$ 3000<br>
+        二手：NT$ 1600(1點)
+    </div>
+
+</div>
+
+<!-- 變壓器 -->
+<div class="option">
+
+    <div class="search-header">
+        <img src="https://files.catbox.moe/nyle0m.jpg" alt="變壓器">
+        <div class="search-name">變壓器</div>
+    </div>
+
+    <div class="search-content">
+        全新：NT$ 1200<br>
+        二手：NT$ 700(1點)
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===== Apple頁 ===== -->
+
+<div id="applePage">
+
+<div class="container">
+
+    <div class="card">
+
+        <a href="#" class="btn back-btn" onclick="goHome()">
+            ← 返回首頁
+        </a>
+
+        <h2 class="title">Apple 維修項目</h2>
+
+        <!-- 電池 -->
+        <div class="item">
+
+            <div class="left">
+                <img src="https://files.catbox.moe/m8pmsg.jpg" alt="電池">
+                <span>電池</span>
+            </div>
+
+            <a href="#" class="btn" onclick="showBatteryPage()">
+                查看
+            </a>
+
+        </div>
+
+        <!-- 螢幕 -->
+        <div class="item">
+
+            <div class="left">
+                <img src="https://files.catbox.moe/4vpq2y.jpg" alt="螢幕">
+                <span>螢幕</span>
+            </div>
+
+            <a href="#" class="btn">
+                查看
+            </a>
+
+        </div>
+
+        <!-- 變壓器 -->
+        <div class="item">
+
+            <div class="left">
+                <img src="https://files.catbox.moe/nyle0m.jpg" alt="變壓器">
+                <span>變壓器</span>
+            </div>
+
+            <a href="#" class="btn">
+                查看
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- ===== 電池頁 ===== -->
+
+<div id="batteryPage">
+
+<div class="container">
+
+    <div class="card">
+
+        <a href="#" class="btn back-btn" onclick="backToApple()">
+            ← 返回 Apple 頁面
+        </a>
+
+        <h2 class="title">🔋 電池細部選項</h2>
+
+        <!-- iphone11 -->
+        <div class="option">
+
+            <div class="product-layout">
+
+                <img 
+                src="https://files.catbox.moe/c9doxc.jpg" 
+                class="product-img"
+                alt="iphone電池">
+
+                <div class="content">
+
+                    <div class="health">iPhone 11 電池</div>
+
+                    <div class="price">
+                        全新：NT$ 3000<br>
+
+                        <div class="second-hand">(二手)</div>
+
+                        健康度90：NT$ 2200(1點)<br>
+                        健康度80：NT$ 1900(2點)<br>
+                        健康度70：NT$ 1600(3點)
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+ <!-- iphone17 -->
+        <div class="option">
+
+            <div class="product-layout">
+
+                <img 
+                src="https://files.catbox.moe/tspj10.jpg" 
+                class="product-img"
+                alt="iphone電池">
+
+                <div class="content">
+
+                    <div class="health">iPhone 17 電池</div>
+
+                    <div class="price">
+                        全新：NT$ 6000<br>
+
+                        <div class="second-hand">(二手)</div>
+
+                        健康度90：NT$ 5500(1點)<br>
+                        健康度80：NT$ 4200(2點)<br>
+                        健康度70：NT$ 3800(3點)
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+ <!-- iphone16 -->
+        <div class="option">
+
+            <div class="product-layout">
+
+                <img 
+                src="https://files.catbox.moe/g0tr9v.jpg" 
+                class="product-img"
+                alt="iphone電池">
+
+                <div class="content">
+
+                    <div class="health">iPhone 16 電池</div>
+
+                    <div class="price">
+                        全新：NT$ 5000<br>
+
+                        <div class="second-hand">(二手)</div>
+
+                        健康度90：NT$ 4800(1點)<br>
+                        健康度80：NT$ 3200(2點)<br>
+                        健康度70：NT$ 2800(3點)
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- iphone15 -->
+        <div class="option">
+
+            <div class="product-layout">
+
+                <img 
+                src="https://files.catbox.moe/m8pmsg.jpg" 
+                class="product-img"
+                alt="iphone電池">
+
+                <div class="content">
+
+                    <div class="health">iPhone 15 電池</div>
+
+                    <div class="price">
+                        全新：NT$ 4000<br>
+
+                        <div class="second-hand">(二手)</div>
+
+                        健康度90：NT$ 3600(1點)<br>
+                        健康度80：NT$ 2800(2點)<br>
+                        健康度70：NT$ 1900(3點)
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+/* ===== 首頁 -> 搜尋頁 ===== */
+
+function showSearchPage(){
+
+    document.getElementById("homePage").style.display = "none";
+    document.getElementById("searchPage").style.display = "block";
+
+}
+
+/* ===== 搜尋頁 -> 首頁 ===== */
+
+function backHomeFromSearch(){
+
+    document.getElementById("searchPage").style.display = "none";
+    document.getElementById("homePage").style.display = "block";
+
+}
+
+/* ===== 首頁 -> Apple頁 ===== */
+
+function showApplePage(){
+
+    document.getElementById("homePage").style.display = "none";
+    document.getElementById("applePage").style.display = "block";
+
+}
+
+/* ===== Apple頁 -> 首頁 ===== */
+
+function goHome(){
+
+    document.getElementById("applePage").style.display = "none";
+    document.getElementById("homePage").style.display = "block";
+
+}
+
+/* ===== Apple頁 -> 電池頁 ===== */
+
+function showBatteryPage(){
+
+    document.getElementById("applePage").style.display = "none";
+    document.getElementById("batteryPage").style.display = "block";
+
+}
+
+/* ===== 電池頁 -> Apple頁 ===== */
+
+function backToApple(){
+
+    document.getElementById("batteryPage").style.display = "none";
+    document.getElementById("applePage").style.display = "block";
+
+}
+
+</script>
+
+</body>
+</html>
